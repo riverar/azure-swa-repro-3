@@ -18,6 +18,23 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+
+      - name: Get Emscripten
+        uses: actions/checkout@v2
+        with:
+          repository: 'emscripten-core/emsdk'
+          submodules: true
+          path: emscripten
+
+      - name: Install Emscripten toolset
+        run: |
+          emscripten/emsdk install latest
+          emscripten/emsdk activate latest --permanent
+
+      - name: Compile native modules
+        run: |
+          emscripten/upstream/emscripten/emcc api/modules/custom-module/hello.cpp -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall,cwrap] -o api/modules/custom-module/dist/hello.js
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v0.0.1-preview
@@ -27,8 +44,9 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "." # App source code path
-          api_location: "." # Api source code path - optional
+          app_location: "/static" # App source code path
+          skip_app_build: true
+          api_location: "/api" # Api source code path - optional
           output_location: ".github/workflows" # Built app content directory - optional
           ###### End of Repository/Build Configurations ######
 
