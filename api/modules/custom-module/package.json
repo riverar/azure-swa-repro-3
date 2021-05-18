@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "dist/hello.js",
   "scripts": {
-    "install": ""
+    "dev": "emcc hello.cpp -s WASM=1 -s MODULARIZE -s EXPORTED_RUNTIME_METHODS=[ccall,cwrap] -o dist/hello.js"
   },
   "devDependencies": {}
 }

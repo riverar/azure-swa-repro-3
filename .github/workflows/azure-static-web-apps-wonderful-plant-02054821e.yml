@@ -33,7 +33,7 @@ jobs:
 
       - name: Compile native modules
         run: |
-          emscripten/upstream/emscripten/emcc api/modules/custom-module/hello.cpp -s WASM=1 -s EXPORTED_RUNTIME_METHODS=[ccall,cwrap] -o api/modules/custom-module/dist/hello.js
+          emscripten/upstream/emscripten/emcc api/modules/custom-module/hello.cpp -s WASM=1 -s MODULARIZE -s EXPORTED_RUNTIME_METHODS=[ccall,cwrap] -o api/modules/custom-module/dist/hello.js
 
       - name: Build And Deploy
         id: builddeploy

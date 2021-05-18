@@ -1,8 +1,9 @@
-const custom_module = require('custom-module');
-const get_random_number = custom_module.cwrap('get_random_number', 'number', []);
+const module_factory = require('custom-module');
 
 module.exports = async function (context, req) {
-    context.res = {
+    const instance = await module_factory()
+    const get_random_number = instance.cwrap('get_random_number', 'number', [])
+    return {
         body: get_random_number()
     };
 }
